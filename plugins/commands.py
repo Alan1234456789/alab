@@ -44,7 +44,7 @@ async def start(client, message):
             logger.error("Make sure Bot is admin in Forcesub channel")
             return
         btn = []
-        btn.append([InlineKeyboardButton("🤖 Join Updates Channel", url=invite_link.invite_link)])
+        btn.append([InlineKeyboardButton("🤖 Join Updates Channel", url='https://t.me/Mallu_pedia')
         if message.command[1] != "subscribe":
             btn.append([InlineKeyboardButton(" 🔄 Try Again", callback_data=f"checksub#{message.command[1]}")])
         await client.send_message(
