@@ -144,6 +144,9 @@ async def imdb_search(client, message):
         await k.edit('Here is what i found on IMDb', reply_markup=InlineKeyboardMarkup(btn))
     else:
         await message.reply('Give me a movie Name')
+buttons = [[
+            InlineKeyboardButton('🔍 Search', switch_inline_query_current_chat=''),
+        ]]
 
 @Client.on_callback_query(filters.regex('^imdb'))
 async def imdb_callback(bot: Client, query: CallbackQuery):
