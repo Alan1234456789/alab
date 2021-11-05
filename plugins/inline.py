@@ -1,5 +1,6 @@
 import logging
 from pyrogram import Client, emoji, filters
+from pyrogram.errors.exceptions.bad_request_400 import QueryIdInvalid
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, InlineQueryResultCachedDocument
 from database.ia_filterdb import get_search_results
 from utils import is_subscribed, get_size
@@ -29,17 +30,16 @@ async def answer(bot, query):
         string = query.query.strip()
         file_type = None
 
-     offset = int(query.offset or 0)
+    offset = int(query.offset or 0)
     reply_markup = get_reply_markup(query=string)
-    files, next_offset = await get_search_results(string,
+    files, next_offset, total = await get_search_results(string,
                                                   file_type=file_type,
                                                   max_results=10,
                                                   offset=offset)
 
-
     for file in files:
         title=file.file_name
-        size=file.file_size
+        size=get_size(file.file_size)
         f_caption=file.caption
         if CUSTOM_FILE_CAPTION:
             try:
@@ -58,7 +58,7 @@ async def answer(bot, query):
                 reply_markup=reply_markup))
 
     if results:
-        switch_pm_text = f"{emoji.FILE_FOLDER} Results"
+        switch_pm_text = f"{emoji.FILE_FOLDER} Results - {total}"
         if string:
             switch_pm_text += f" for {string}"
         try:
@@ -68,6 +68,8 @@ async def answer(bot, query):
                            switch_pm_text=switch_pm_text,
                            switch_pm_parameter="start",
                            next_offset=str(next_offset))
+        except QueryIdInvalid:
+            pass
         except Exception as e:
             logging.exception(str(e))
             await query.answer(results=[], is_personal=True,
@@ -87,11 +89,11 @@ async def answer(bot, query):
 
 
 def get_reply_markup(query):
-    buttons = [[
-        InlineKeyboardButton('Deploy Video', url=f'{TUTORIAL}')
-        ],[
-        InlineKeyboardButton('🔍 Search again 🔎', switch_inline_query_current_chat=query)
-        ]]
+    buttons = [
+        [
+            InlineKeyboardButton('Search again', switch_inline_query_current_chat=query)
+        ]
+        ]
     return InlineKeyboardMarkup(buttons)
 
 
