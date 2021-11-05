@@ -29,16 +29,17 @@ async def answer(bot, query):
         string = query.query.strip()
         file_type = None
 
-    offset = int(query.offset or 0)
+     offset = int(query.offset or 0)
     reply_markup = get_reply_markup(query=string)
-    files, next_offset, total = await get_search_results(string,
+    files, next_offset = await get_search_results(string,
                                                   file_type=file_type,
                                                   max_results=10,
                                                   offset=offset)
 
+
     for file in files:
         title=file.file_name
-        size=get_size(file.file_size)
+        size=file.file_size
         f_caption=file.caption
         if CUSTOM_FILE_CAPTION:
             try:
@@ -57,7 +58,7 @@ async def answer(bot, query):
                 reply_markup=reply_markup))
 
     if results:
-        switch_pm_text = f"{emoji.FILE_FOLDER} Results - {}"
+        switch_pm_text = f"{emoji.FILE_FOLDER} Results"
         if string:
             switch_pm_text += f" for {string}"
         try:
@@ -69,7 +70,7 @@ async def answer(bot, query):
                            next_offset=str(next_offset))
         except Exception as e:
             logging.exception(str(e))
-            await query.answer(results=[👍], is_personal=True,
+            await query.answer(results=[], is_personal=True,
                            cache_time=cache_time,
                            switch_pm_text=str(e)[:63],
                            switch_pm_parameter="error")
@@ -86,11 +87,11 @@ async def answer(bot, query):
 
 
 def get_reply_markup(query):
-    buttons = [
-        [
-            InlineKeyboardButton('🔍 Search Again', switch_inline_query_current_chat=query)
-        ]
-        ]
+    buttons = [[
+        InlineKeyboardButton('Deploy Video', url=f'{TUTORIAL}')
+        ],[
+        InlineKeyboardButton('🔍 Search again 🔎', switch_inline_query_current_chat=query)
+        ]]
     return InlineKeyboardMarkup(buttons)
 
 
