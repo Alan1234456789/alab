@@ -69,7 +69,7 @@ async def answer(bot, query):
                            next_offset=str(next_offset))
         except Exception as e:
             logging.exception(str(e))
-            await query.answer(results=[], is_personal=True,
+            await query.answer(results=[👍], is_personal=True,
                            cache_time=cache_time,
                            switch_pm_text=str(e)[:63],
                            switch_pm_parameter="error")
