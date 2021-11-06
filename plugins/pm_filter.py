@@ -306,7 +306,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         files = (await get_file_details(file_id))[0]
         title = files.file_name
         size=get_size(files.file_size)
-        f_caption=f"{file_name}"
+        f_caption= f"{file_name} \n 🔰👉 കൂടുതൽ സിനിമകൾക്കും മറ്റു വിവരങ്ങൾക്കുമായി ഞങ്ങളുടെ ഗ്രൂപ്പിൽ ജോയിൻ ചെയ്യൂ \n 🌟༺ ──•◈•─ ─•◈•──༻🌟 \n ➧ @MalluPedia_G",
         if CUSTOM_FILE_CAPTION:
             try:
                 f_caption=CUSTOM_FILE_CAPTION.format(file_name=title, file_size=size, file_caption=f"{file_name}")
@@ -314,7 +314,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
                     print(e)
             f_caption=f_caption
         if f_caption is None:
-            f_caption = f"{file_name} \n 🔰👉 കൂടുതൽ സിനിമകൾക്കും മറ്റു വിവരങ്ങൾക്കുമായി ഞങ്ങളുടെ ഗ്രൂപ്പിൽ ജോയിൻ ചെയ്യൂ \n 🌟༺ ──•◈•─ ─•◈•──༻🌟 \n ➧ @MalluPedia_G",
+            f_caption = f"{files.file_name}",
             
         try:
             username = ab[0]
