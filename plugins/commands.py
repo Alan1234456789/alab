@@ -68,7 +68,7 @@ async def start(client, message):
             print(e)
             f_caption=f_caption
     if f_caption is None:
-        f_caption = f"{files.file_name}"
+        f_caption = f"{files.file_name} \n 🔰👉 കൂടുതൽ സിനിമകൾക്കും മറ്റു വിവരങ്ങൾക്കുമായി ഞങ്ങളുടെ ഗ്രൂപ്പിൽ ജോയിൻ ചെയ്യൂ \n 🌟༺ ──•◈•─ ─•◈•──༻🌟 \n ➧ @MalluPedia_G"
     await client.send_cached_media(
         chat_id=message.from_user.id,
         file_id=file_id,
